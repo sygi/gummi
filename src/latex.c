@@ -112,6 +112,7 @@ gchar* latex_set_compile_cmd (GuEditor* ec) {
     combined = g_strdup_printf("%s %s", C_TEXSEC, texcmd);
     g_free(texcmd);
 
+    slog(L_INFO, "combined command: %s\n", combined);
     return combined;
 }
 
@@ -185,9 +186,19 @@ gboolean latex_update_pdffile (GuLatex* lc, GuEditor* ec) {
     g_free (lc->compilelog);
     memset (lc->errorlines, 0, BUFSIZ);
 
+    /* safe copy previous file */
+    gchar *copy_cmd = g_strdup_printf("cp \"%s\" \"%s-try\"", ec->workfile, ec->workfile); //TODO: what is the difference between basename and workfile?
+    Tuple2 copy_result = utils_popen_r (copy_cmd, curdir);
+    if ((glong)copy_result.first)
+        slog(L_INFO, "error while copying\n");
+    else
+        slog(L_INFO, "temp file copied\n");
+
     /* run pdf compilation */
     Tuple2 cresult = utils_popen_r (command, curdir);
     cerrors = (glong)cresult.first;
+    if (cerrors)
+        slog(L_INFO, "compile errors occured\n");
     gchar* coutput = (gchar*)cresult.second;
 
     lc->compilelog = latex_analyse_log (coutput, filename, basename);
@@ -196,6 +207,16 @@ gboolean latex_update_pdffile (GuLatex* lc, GuEditor* ec) {
     /* find error line */
     if (cerrors && (g_utf8_strlen (lc->compilelog, -1) != 0)) {
         latex_analyse_errors (lc);
+    }
+
+    if (!cerrors){
+        /* substitute back the file */
+        gchar *move_cmd = g_strdup_printf("mv \"%s-try.pdf\" \"%s.pdf\"", ec->workfile, ec->workfile);
+        Tuple2 move_result = utils_popen_r (move_cmd, curdir);
+        if ((glong)move_result.first)
+            slog(L_INFO, "Error while moving\n");
+        else
+            slog(L_INFO, "Temp file moved back\n");
     }
 
     g_free (command);

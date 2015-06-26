@@ -64,7 +64,9 @@ GuInfoscreenGui* infoscreengui_init (GtkBuilder* builder) {
 
 void infoscreengui_enable (GuInfoscreenGui *is, const gchar *msg) {
     GList* list = NULL;
+    slog(L_INFO, "infoscreengui_enable, msg: %s", msg);
 
+    return;
     list = gtk_container_get_children (GTK_CONTAINER (is->viewport));
 
     infoscreengui_set_message (is, msg);

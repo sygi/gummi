@@ -58,6 +58,7 @@ gboolean latexmk_detected (void) {
 }
 
 gchar* latexmk_get_command (const gchar* method, gchar* workfile, gchar* basename) {
+    slog(L_INFO, "latexmk_get_command");
     gchar* outdir = g_strdup("");
     gchar* base;
 

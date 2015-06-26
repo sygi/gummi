@@ -94,7 +94,7 @@ gboolean xelatex_detected (void) {
 }
 
 gchar* texlive_get_command (const gchar* method, gchar* workfile, gchar* basename) {
-
+    slog(L_INFO, "texlive_get_command. workfile: %s, basename: %s\n", workfile, basename);
     const gchar* outdir = g_strdup_printf("-output-directory=\"%s\"", C_TMPDIR);
 
 
@@ -116,8 +116,8 @@ gchar* texlive_get_command (const gchar* method, gchar* workfile, gchar* basenam
     #endif
 
     if (STR_EQU (method, "texpdf")) {
-
-        texcmd = g_strdup_printf("%s %s %s \"%s\"", typesetter,
+        slog(L_INFO, "texpdf method\n");
+        texcmd = g_strdup_printf("%s %s %s \"%s-try\"", typesetter,
                                                 flags,
                                                 outdir,
                                                 workfile);
@@ -134,6 +134,8 @@ gchar* texlive_get_command (const gchar* method, gchar* workfile, gchar* basenam
     g_free(script);
     g_free(dviname);
     g_free(psname);
+
+    slog(L_INFO, "Command: %s\n", texcmd);
 
     return texcmd;
 }
