@@ -117,7 +117,7 @@ gchar* texlive_get_command (const gchar* method, gchar* workfile, gchar* basenam
 
     if (STR_EQU (method, "texpdf")) {
         slog(L_INFO, "texpdf method\n");
-        texcmd = g_strdup_printf("%s %s %s \"%s-try\"", typesetter,
+        texcmd = g_strdup_printf("%s %s %s \"%s-new\"", typesetter,
                                                 flags,
                                                 outdir,
                                                 workfile);

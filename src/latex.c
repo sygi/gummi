@@ -187,7 +187,7 @@ gboolean latex_update_pdffile (GuLatex* lc, GuEditor* ec) {
     memset (lc->errorlines, 0, BUFSIZ);
 
     /* safe copy previous file */
-    gchar *copy_cmd = g_strdup_printf("cp \"%s\" \"%s-try\"", ec->workfile, ec->workfile); //TODO: what is the difference between basename and workfile?
+    gchar *copy_cmd = g_strdup_printf("cp \"%s\" \"%s-new\"", ec->workfile, ec->workfile); //TODO: what is the difference between basename and workfile?
     Tuple2 copy_result = utils_popen_r (copy_cmd, curdir);
     if ((glong)copy_result.first)
         slog(L_INFO, "error while copying\n");
@@ -210,8 +210,21 @@ gboolean latex_update_pdffile (GuLatex* lc, GuEditor* ec) {
     }
 
     if (!cerrors){
+        /* calculate the diff */
+        gchar *diff_cmd = g_strdup_printf(\
+            "diff-pdf --output-diff=\"%s.pdf\" \"%s-old.pdf\" \"%s-new.pdf\"",\
+            ec->workfile, ec->workfile, ec->workfile);
+        Tuple2 diff_result = utils_popen_r(diff_cmd, curdir);
+
         /* substitute back the file */
-        gchar *move_cmd = g_strdup_printf("mv \"%s-try.pdf\" \"%s.pdf\"", ec->workfile, ec->workfile);
+        if ((glong)diff_result.first){
+            slog(L_INFO, "Files differ\n");
+        } else {
+            slog(L_INFO, "Files are identical\n");
+        }
+
+        gchar *move_cmd = g_strdup_printf("mv \"%s-new.pdf\" \"%s-old.pdf\"",\
+            ec->workfile, ec->workfile);
         Tuple2 move_result = utils_popen_r (move_cmd, curdir);
         if ((glong)move_result.first)
             slog(L_INFO, "Error while moving\n");
