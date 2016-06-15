@@ -2,7 +2,7 @@
  * @file    gui-main.c
  * @brief
  *
- * Copyright (C) 2009-2012 Gummi-Dev Team <alexvandermey@gmail.com>
+ * Copyright (C) 2009-2016 Gummi Developers
  * All Rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -776,7 +776,8 @@ gchar* get_open_filename (GuFilterType type) {
         "shouldn't happen",
         "shouldn't happen",
         _("Select an image to insert"),
-        _("Select bibliography file")
+        _("Select bibliography file"),
+        _("Select project file")
     };
 
     chooser = GTK_FILE_CHOOSER (gtk_file_chooser_dialog_new (
@@ -863,10 +864,6 @@ void file_dialog_set_filter (GtkFileChooser* dialog, GuFilterType type) {
             gtk_file_filter_add_pattern (filter, "*.tex");
             gtk_file_chooser_add_filter (dialog, filter);
             gtk_file_chooser_set_filter (dialog, filter);
-            filter = gtk_file_filter_new ();
-            gtk_file_filter_set_name (filter, _("Text files"));
-            gtk_file_filter_add_mime_type (filter, "text/plain");
-            gtk_file_chooser_add_filter (dialog, filter);
             break;
 
         case TYPE_PDF:

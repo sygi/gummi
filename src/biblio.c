@@ -2,7 +2,7 @@
  * @file   biblio.c
  * @brief
  *
- * Copyright (C) 2009-2012 Gummi-Dev Team <alexvandermey@gmail.com>
+ * Copyright (C) 2009-2016 Gummi Developers
  * All Rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -70,7 +70,7 @@ gboolean biblio_detect_bibliography (GuBiblio* bc, GuEditor* ec) {
     gboolean state = FALSE;
 
     content = editor_grab_buffer (ec);
-    bib_regex = g_regex_new ("^\\\\bibliography{\\s*([^{}\\s]*)\\s*}",
+    bib_regex = g_regex_new ("^[^%]*\\\\bibliography{\\s*([^{}\\s]*)\\s*}",
         G_REGEX_MULTILINE, 0, NULL);
     if (g_regex_match (bib_regex, content, 0, &match_info)) {
         result = g_match_info_fetch_all (match_info);

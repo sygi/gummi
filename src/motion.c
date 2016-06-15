@@ -2,7 +2,7 @@
  * @file   motion.c
  * @brief
  *
- * Copyright (C) 2009-2012 Gummi-Dev Team <alexvandermey@gmail.com>
+ * Copyright (C) 2009-2016 Gummi Developers
  * All Rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -276,6 +276,7 @@ void motion_stop_errormode (GuMotion *mc) {
 }
 
 gboolean motion_idle_cb (gpointer user) {
+    GU_MOTION(user)->key_press_timer = 0;
     if (gui->previewgui->preview_on_idle)
         motion_do_compile (GU_MOTION (user));
     return FALSE;

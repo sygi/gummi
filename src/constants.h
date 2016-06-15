@@ -2,7 +2,7 @@
  * @file   constants.h
  * @brief  Constants used throughout the program
  *
- * Copyright (C) 2009-2012 Gummi-Dev Team <alexvandermey@gmail.com>
+ * Copyright (C) 2009-2016 Gummi Developers
  * All Rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -59,7 +59,7 @@
     #define C_CMDSEP "&&"
     #define C_TEXSEC ""
 #else
-    #define C_TMPDIR g_get_tmp_dir()
+    #define C_TMPDIR g_build_path(G_DIR_SEPARATOR_S, g_get_user_cache_dir(), "gummi", NULL)
     #define C_CMDSEP ";"
     #define C_TEXSEC "env openout_any=a"
 #endif

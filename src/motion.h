@@ -2,7 +2,7 @@
  * @file   motion.h
  * @brief
  *
- * Copyright (C) 2009-2012 Gummi-Dev Team <alexvandermey@gmail.com>
+ * Copyright (C) 2009-2016 Gummi Developers
  * All Rights reserved.
  *
  * Permission is hereby granted, free of charge, to any person
@@ -37,7 +37,7 @@
 typedef struct _GuMotion GuMotion;
 
 struct _GuMotion {
-    gint key_press_timer;
+    guint key_press_timer;
     GMutex signal_mutex;
     GMutex compile_mutex;
     GThread* compile_thread;
